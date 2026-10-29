@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Steelwake – 2D Action-Adventure Kit for Godot 4</title>
+<meta name="description" content="A complete 2D action-adventure game for Godot 4 you can re-skin and ship. Three heroines, twelve enemies, bosses, 263 weapons, puzzles, traps and a shop. Levels are a table you fill in.">
+<meta property="og:title" content="Steelwake – 2D Action-Adventure Kit for Godot 4">
+<meta property="og:description" content="A finished, playable Godot 4 game you turn into your own. Play the demo in your browser.">
+<meta property="og:image" content="media/cover.png">
+<link rel="icon" href="media/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e1220;
+  --bg-2: #151b2e;
+  --card: #1a2238;
+  --line: #2a3452;
+  --text: #e6e9f2;
+  --muted: #9aa3bd;
+  --gold: #f4d98a;
+  --gold-2: #e9b949;
+  --steel: #8fb3ff;
+  --blood: #c6413a;
+  --radius: 10px;
+  --max: 1120px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.6 Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--steel); }
+img, video { max-width: 100%; display: block; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+h1, h2, h3, .pixel { font-family: "Pixelify Sans", Inter, sans-serif; letter-spacing: .02em; }
+h2 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 8px; color: var(--gold); }
+.lead { color: var(--muted); max-width: 680px; margin: 0 0 32px; font-size: 18px; }
+section { padding: 72px 0; }
+section + section { border-top: 1px solid var(--line); }
+
+/* nav */
+nav { position: sticky; top: 0; z-index: 10; background: rgba(14,18,32,.88); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+nav .wrap { display: flex; align-items: center; gap: 24px; height: 60px; }
+nav .logo { font-family: "Pixelify Sans"; font-weight: 700; font-size: 22px; color: var(--gold); text-decoration: none; letter-spacing: .08em; }
+nav .links { display: flex; gap: 20px; margin-left: auto; align-items: center; }
+nav .links a:not(.btn) { color: var(--muted); text-decoration: none; font-size: 15px; }
+nav .links a:not(.btn):hover { color: var(--text); }
+@media (max-width: 720px) { nav .links a:not(.btn) { display: none; } }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+  padding: 12px 22px; border-radius: 8px; font-weight: 700; text-decoration: none;
+  border: 2px solid transparent; cursor: pointer; font-size: 16px; font-family: Inter, sans-serif;
+  transition: transform .1s, background .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-buy { background: var(--gold-2); color: #1b1408; box-shadow: 0 3px 0 #9c7520; }
+.btn-buy:hover { background: var(--gold); }
+.btn-ghost { border-color: var(--line); color: var(--text); background: transparent; }
+.btn-ghost:hover { border-color: var(--steel); }
+.btn-sm { padding: 8px 14px; font-size: 14px; }
+
+/* hero */
+.hero { padding: 64px 0 56px; background:
+  radial-gradient(800px 400px at 70% 0%, rgba(143,179,255,.14), transparent 60%),
+  linear-gradient(var(--bg-2), var(--bg)); }
+.hero .grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: 48px; align-items: center; }
+@media (max-width: 900px) { .hero .grid { grid-template-columns: 1fr; } }
+.hero h1 { font-size: clamp(48px, 8vw, 84px); line-height: 1; margin: 0 0 12px; color: var(--gold);
+  text-shadow: 0 4px 0 #6b4f12; letter-spacing: .06em; }
+.hero .kicker { color: var(--steel); font-weight: 600; text-transform: uppercase; letter-spacing: .12em; font-size: 13px; margin-bottom: 14px; }
+.hero p.sub { font-size: 19px; color: var(--text); margin: 0 0 28px; }
+.hero .ctas { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.hero .price { font-family: "Pixelify Sans"; font-size: 26px; color: #1b1408; margin-right: 4px; padding-right: 10px; border-right: 2px solid rgba(27,20,8,.25); }
+.hero .facts { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 26px; color: var(--muted); font-size: 14px; }
+.hero .facts b { color: var(--text); }
+.video { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #000;
+  box-shadow: 0 20px 60px rgba(0,0,0,.5); aspect-ratio: 16/9; }
+.video video { width: 100%; height: 100%; object-fit: cover; }
+
+/* demo */
+.demo-box { position: relative; aspect-ratio: 16/9; border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--line); background: #000 center/cover no-repeat; }
+.demo-box .cover { position: absolute; inset: 0; display: grid; place-content: center; gap: 14px; text-align: center;
+  background: rgba(8,10,20,.55); }
+.demo-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.demo-note { color: var(--muted); font-size: 14px; margin-top: 12px; }
+.keys { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 10px; font-size: 14px; color: var(--muted); }
+kbd { font: 12px "JetBrains Mono", monospace; background: var(--card); border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 4px; padding: 1px 6px; color: var(--text); }
+
+/* table / code */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+@media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+pre { margin: 0; background: #0a0d18; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px;
+  overflow-x: auto; font: 13px/1.55 "JetBrains Mono", monospace; color: #c9d1e6; }
+pre .k { color: var(--gold); } pre .s { color: #9fd49a; } pre .n { color: #ffb38a; } pre .c { color: #66708c; }
+.steps { list-style: none; padding: 0; margin: 0; counter-reset: s; }
+.steps li { counter-increment: s; padding: 0 0 18px 48px; position: relative; }
+.steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 8px;
+  display: grid; place-content: center; background: var(--card); border: 1px solid var(--line); color: var(--gold);
+  font-family: "Pixelify Sans"; font-weight: 700; }
+.steps b { display: block; }
+.steps span { color: var(--muted); }
+
+/* features */
+.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.feature { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+.feature h3 { margin: 0 0 10px; font-size: 22px; color: var(--text); }
+.feature ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 15px; }
+.feature li { margin: 4px 0; }
+
+/* numbers */
+.numbers { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 40px; }
+.num { text-align: center; padding: 20px 10px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.num b { display: block; font-family: "Pixelify Sans"; font-size: 40px; color: var(--gold); line-height: 1.1; }
+.num span { color: var(--muted); font-size: 14px; }
+
+/* gallery */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.gallery img { border-radius: 8px; border: 1px solid var(--line); cursor: zoom-in; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.9); display: none; place-content: center; z-index: 50; padding: 16px; cursor: zoom-out; }
+.lightbox.open { display: grid; }
+.lightbox img { max-height: 90vh; border-radius: 8px; }
+
+/* included + faq */
+.included { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 32px; padding: 0; list-style: none; margin: 0; }
+.included li { padding-left: 28px; position: relative; }
+.included li::before { content: "✦"; position: absolute; left: 0; color: var(--gold-2); }
+details { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; margin-bottom: 10px; }
+summary { cursor: pointer; font-weight: 600; }
+details p { color: var(--muted); margin: 10px 0 0; }
+
+/* buy */
+.buy { text-align: center; background: radial-gradient(600px 300px at 50% 0%, rgba(233,185,73,.12), transparent 70%); }
+.buy .box { max-width: 560px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 36px 24px; }
+.buy .big { font-family: "Pixelify Sans"; font-size: 64px; color: var(--gold); line-height: 1; margin: 8px 0 4px; }
+.buy ul { text-align: left; display: inline-block; color: var(--muted); margin: 18px 0 26px; }
+footer { padding: 32px 0; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#">STEELWAKE</a>
+    <div class="links">
+      <a href="#demo">Demo</a>
+      <a href="#levels">Levels</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn-buy btn-sm" href="#buy">Buy $99</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap grid">
+    <div>
+      <div class="kicker">2D action-adventure kit · Godot 4</div>
+      <h1>STEELWAKE</h1>
+      <p class="sub">A finished, playable action game you open in Godot 4 and make your own. Build new levels by filling in a table.</p>
+      <div class="ctas">
+        <a class="btn btn-buy" href="#buy"><span class="price">$99</span> Buy the kit</a>
+        <a class="btn btn-ghost" href="#demo">▶ Play the demo</a>
+      </div>
+      <div class="facts">
+        <span><b>Full source</b> GDScript</span>
+        <span><b>Godot</b> 4.7+</span>
+        <span><b>54 MB</b> download</span>
+        <span><b>Royalty-free</b></span>
+      </div>
+    </div>
+    <div class="video">
+      <video src="media/trailer.mp4" poster="media/shot-1.jpg" controls playsinline preload="metadata"></video>
+    </div>
+  </div>
+</header>
+
+<section id="demo">
+  <div class="wrap">
+    <h2>Play it first</h2>
+    <p class="lead">This is the kit itself, running in your browser: three levels, three heroines, three bosses. Everything you play here is in the download.</p>
+    <div class="demo-box" id="demoBox" style="background-image:url(media/shot-0-title.jpg)">
+      <div class="cover">
+        <button class="btn btn-buy" id="playBtn">▶ Load the demo</button>
+        <span style="color:var(--muted);font-size:14px">About 70 MB · best on a computer with a keyboard</span>
+      </div>
+    </div>
+    <div class="keys">
+      <span><kbd>A</kbd><kbd>D</kbd> move</span>
+      <span><kbd>Space</kbd> jump</span>
+      <span><kbd>W</kbd><kbd>S</kbd> climb / crouch</span>
+      <span><kbd>J</kbd> attack (hold: heavy)</span>
+      <span><kbd>K</kbd> special</span>
+      <span><kbd>L</kbd> kick</span>
+      <span><kbd>I</kbd> guard</span>
+      <span><kbd>U</kbd> dodge</span>
+      <span><kbd>E</kbd> use</span>
+      <span><kbd>Esc</kbd> pause (all controls listed there)</span>
+    </div>
+    <p class="demo-note">Phones and tablets: the demo shows touch buttons, but the download is large. <a href="demo/" target="_blank" rel="noopener">Open it full screen</a>.</p>
+  </div>
+</section>
+
+<section id="levels">
+  <div class="wrap split">
+    <div>
+      <h2>A level is a table</h2>
+      <p class="lead">No scene to hand-place and no level editor to learn. Write the ground, the enemies, the chests, the traps, the puzzles, the story lines and the boss as rows of numbers, then press play.</p>
+      <ol class="steps">
+        <li><b>Copy a demo level</b><span>Each one is a single script with one table.</span></li>
+        <li><b>Change the numbers</b><span>Columns and rows on a 48 px grid. Every key is explained in the levels guide.</span></li>
+        <li><b>Press play</b><span>Or let the play-test bot run it start to finish and report where it got stuck.</span></li>
+        <li><b>Need something new?</b><span>Hook into <code>built()</code>, <code>tick()</code> and <code>boss_down()</code> for your own code.</span></li>
+      </ol>
+    </div>
+<pre><span class="c"># game/level1.gd  (shortened)</span>
+<span class="k">func</span> define() -> Dictionary:
+  <span class="k">return</span> {
+    <span class="s">"name"</span>: <span class="s">"The Old Forest"</span>,
+    <span class="s">"cols"</span>: <span class="n">140</span>,
+    <span class="s">"terrain"</span>: <span class="s">"grassland"</span>,
+    <span class="s">"ground"</span>: [[<span class="n">0</span>, <span class="n">28</span>, <span class="n">14</span>], [<span class="n">28</span>, <span class="n">46</span>, <span class="n">13</span>],
+               [<span class="n">46</span>, <span class="n">50</span>, <span class="n">-1</span>], [<span class="n">50</span>, <span class="n">140</span>, <span class="n">13</span>]],
+    <span class="s">"ropes"</span>: [[<span class="n">46.9</span>, <span class="n">7.6</span>, <span class="n">150.0</span>]],
+    <span class="s">"enemies"</span>: [[<span class="n">20</span>, <span class="s">"skeleton"</span>, <span class="n">0.3</span>],
+                [<span class="n">60</span>, <span class="s">"ghoul"</span>, <span class="n">0.35</span>]],
+    <span class="s">"chests"</span>: [[<span class="n">63</span>, <span class="n">9</span>, <span class="k">true</span>]],
+    <span class="s">"shrines"</span>: [[<span class="n">70</span>, <span class="n">13</span>, <span class="s">"own_longsword"</span>,
+      <span class="s">"Three stones carved with signs."</span>, <span class="s">"rock"</span>,
+      {<span class="s">"puzzle"</span>: <span class="s">"runes"</span>, <span class="s">"order"</span>: [<span class="n">1</span>, <span class="n">2</span>, <span class="n">0</span>]}]],
+    <span class="s">"spikes"</span>: [[<span class="n">82</span>, <span class="n">12</span>]],
+    <span class="s">"boss"</span>: {<span class="s">"kind"</span>: <span class="s">"ogre"</span>, <span class="s">"col"</span>: <span class="n">126</span>,
+             <span class="s">"title"</span>: <span class="s">"THE OGRE"</span>},
+    <span class="s">"reward"</span>: <span class="s">"sword_fire"</span>,
+  }</pre>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>Everything a full game needs</h2>
+    <p class="lead">These are the systems from a finished game, cleaned up and documented so you can keep them, change them or take them apart.</p>
+    <div class="numbers">
+      <div class="num"><b>3</b><span>heroines</span></div>
+      <div class="num"><b>12</b><span>enemies × 4 colours</span></div>
+      <div class="num"><b>263</b><span>weapons</span></div>
+      <div class="num"><b>16</b><span>elements</span></div>
+      <div class="num"><b>11</b><span>terrains + skies</span></div>
+      <div class="num"><b>3</b><span>demo levels + bosses</span></div>
+    </div>
+    <div class="features">
+      <div class="feature"><h3>Combat that feels good</h3><ul>
+        <li>Light chains and directional strikes: lunge, launcher, sweep, plunge</li>
+        <li>Heavy blows, charged spells and kicks</li>
+        <li>Parry and counter, perfect-dodge slow motion, finishers</li>
+        <li>Combo counter, damage numbers, hit-stop, camera shake</li>
+        <li>Throw pots, stones, kegs, boulders, or your own weapon, then call it back</li></ul></div>
+      <div class="feature"><h3>Weapons</h3><ul>
+        <li>Sword, axe, spear, halberd, scythe, mace, hammer, flail, staff, dagger, bow, shield</li>
+        <li>16 elements with lasting effects: burn, freeze, shock, poison, bleed, curse…</li>
+        <li>8 legendary weapons, each with its own spell and passive</li>
+        <li>Weapon belt, slow-motion weapon wheel, upgrades to level 5</li></ul></div>
+      <div class="feature"><h3>Enemies and bosses</h3><ul>
+        <li>An AI that takes turns, keeps its footing, avoids traps and backs off when hurt</li>
+        <li>Creature natures and weaknesses: the dead burn, plants wither</li>
+        <li>Bosses drop in, wall off the arena and rage when beaten down</li></ul></div>
+      <div class="feature"><h3>Moving through the world</h3><ul>
+        <li>Double jump, air dash, ledge grab, wall slide and wall jump</li>
+        <li>Ladders, climbable trees, rope swings, swimming</li>
+        <li>Crawling, rolling, hiding in bushes</li></ul></div>
+      <div class="feature"><h3>The world</h3><ul>
+        <li>Checkpoints that heal and open the shop</li>
+        <li>Chests and secret chests; silver, gold and gems</li>
+        <li>Swords stuck in stone behind rune, pressure-plate and ice puzzles</li>
+        <li>Levers, gates, cracked walls, spikes, saws, pendulums, fire jets, crumbling floors, water, bog, caves</li></ul></div>
+      <div class="feature"><h3>Everything around it</h3><ul>
+        <li>Title screen with heroine, weapon and level select</li>
+        <li>The Armoury shop, saves, end-of-level stars and rewards</li>
+        <li>Daily chest, pause menu, subtitled story with portraits</li>
+        <li>Sound effects, music and touch controls for phones</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="shots">
+  <div class="wrap">
+    <h2>Screenshots</h2>
+    <p class="lead">Taken from the demo levels as they ship.</p>
+    <div class="gallery">
+      <img src="media/shot-1.jpg" alt="Kaya fighting an imp in the Old Forest" loading="lazy">
+      <img src="media/shot-2.jpg" alt="Steelwake gameplay" loading="lazy">
+      <img src="media/shot-3.jpg" alt="Steelwake gameplay" loading="lazy">
+      <img src="media/shot-4.jpg" alt="Steelwake gameplay" loading="lazy">
+      <img src="media/shot-5.jpg" alt="Steelwake gameplay" loading="lazy">
+      <img src="media/shot-0-title.jpg" alt="Steelwake title screen" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="included">
+  <div class="wrap">
+    <h2>What you get</h2>
+    <p class="lead">One zip with the whole Godot 4 project, ready to open.</p>
+    <ul class="included">
+      <li>The full Godot 4 project, GDScript commented throughout</li>
+      <li>3 heroines and 12 enemies, fully animated, with portraits</li>
+      <li>263 weapons, each with an on-the-back sheet</li>
+      <li>11 terrains with parallax skies, trees, props and effects</li>
+      <li>Sound effects and two music loops</li>
+      <li>3 demo levels, each ending in a boss fight</li>
+      <li>Guides: getting started, every level key, adding enemies, bosses, weapons, puzzles and heroines</li>
+      <li>An automated play-test bot for your levels</li>
+      <li>A web export preset, plus touch controls for mobile</li>
+    </ul>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <h2>Questions</h2>
+    <details><summary>Which Godot version do I need?</summary><p>Godot 4.7 or newer, the standard build. Nothing else to install: no plugins, no C#.</p></details>
+    <details><summary>Can I sell games I make with it?</summary><p>Yes. Make any number of games, commercial or free, on any platform, with no royalties. Credit is welcome but not required.</p></details>
+    <details><summary>What can't I do?</summary><p>You can't resell or give away the kit or its art as a kit, template or asset pack, changed or not. It ships inside your game, not as something to build games with.</p></details>
+    <details><summary>Do I need to know how to code?</summary><p>Not to build levels: that is filling in a table. To add new enemies, weapons or mechanics you'll write some GDScript, and the guides walk you through each one.</p></details>
+    <details><summary>Does it run on phones?</summary><p>Yes. Touch controls are built in, and the project exports to Android, iOS, web and desktop like any Godot game.</p></details>
+    <details><summary>How big is it?</summary><p>A 54 MB download and about 81 MB unzipped. A game you build with it is about 70 MB on Android.</p></details>
+    <details><summary>How was the art made?</summary><p>Made from code: every character, weapon and terrain is drawn and animated by our own scripts, so it all matches.</p></details>
+    <details><summary>What if I have a problem?</summary><p>Email us from the address on your receipt and we'll help you get it running.</p></details>
+  </div>
+</section>
+
+<section id="buy" class="buy">
+  <div class="wrap">
+    <div class="box">
+      <h2>Get Steelwake</h2>
+      <div class="big">$99</div>
+      <div style="color:var(--muted)">One-time payment · instant download · free updates</div>
+      <ul>
+        <li>The complete Godot 4 project and all its art</li>
+        <li>Use it in unlimited games, royalty-free</li>
+        <li>Every future update to the kit</li>
+      </ul><br>
+      <a class="btn btn-buy" id="buyLink" href="#buy" aria-disabled="true" style="opacity:.75;cursor:default">Coming soon</a><!-- PAYHIP_URL: set href and text "Buy now – $99" -->
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 LumioLab · Steelwake</span>
+    <span>Made from code · Built with Godot</span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox"><img alt=""></div>
+
+<script>
+document.getElementById("playBtn").addEventListener("click", function () {
+  var box = document.getElementById("demoBox");
+  var f = document.createElement("iframe");
+  f.src = "demo/";
+  f.allow = "autoplay; fullscreen; gamepad";
+  f.allowFullscreen = true;
+  box.innerHTML = "";
+  box.appendChild(f);
+  f.focus();
+});
+var lb = document.getElementById("lightbox");
+document.querySelectorAll(".gallery img").forEach(function (img) {
+  img.addEventListener("click", function () { lb.querySelector("img").src = img.src; lb.classList.add("open"); });
+});
+lb.addEventListener("click", function () { lb.classList.remove("open"); });
+</script>
+</body>
+</html>
