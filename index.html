@@ -4,10 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Steelwake – 2D Action-Adventure Kit for Godot 4</title>
-<meta name="description" content="A complete 2D action-adventure game for Godot 4 you can re-skin and ship. Three heroines, twelve enemies, bosses, 263 weapons, puzzles, traps and a shop. Levels are a table you fill in.">
+<meta name="description" content="A complete 2D action-adventure game for Godot 4 you can re-skin and ship. Three heroines, twelve enemies, bosses, 212 weapons, puzzles, traps and a shop. Levels are a table you fill in.">
 <meta property="og:title" content="Steelwake – 2D Action-Adventure Kit for Godot 4">
 <meta property="og:description" content="A finished, playable Godot 4 game you turn into your own. Play the demo in your browser.">
-<meta property="og:image" content="media/cover.png">
+<meta property="og:image" content="https://beastx889.github.io/steelwake-site/media/cover-wide.jpg">
+<meta property="og:url" content="https://beastx889.github.io/steelwake-site/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://beastx889.github.io/steelwake-site/media/cover-wide.jpg">
 <link rel="icon" href="media/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -109,7 +113,7 @@ pre .k { color: var(--gold); } pre .s { color: #9fd49a; } pre .n { color: #ffb38
 .steps span { color: var(--muted); }
 
 /* features */
-.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 16px; }
 .feature { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
 .feature h3 { margin: 0 0 10px; font-size: 22px; color: var(--text); }
 .feature ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 15px; }
@@ -122,7 +126,7 @@ pre .k { color: var(--gold); } pre .s { color: #9fd49a; } pre .n { color: #ffb38
 .num span { color: var(--muted); font-size: 14px; }
 
 /* gallery */
-.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 12px; }
 .gallery img { border-radius: 8px; border: 1px solid var(--line); cursor: zoom-in; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
 .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.9); display: none; place-content: center; z-index: 50; padding: 16px; cursor: zoom-out; }
 .lightbox.open { display: grid; }
@@ -190,7 +194,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
     <div class="demo-box" id="demoBox" style="background-image:url(media/shot-0-title.jpg)">
       <div class="cover">
         <button class="btn btn-buy" id="playBtn">▶ Load the demo</button>
-        <span style="color:var(--muted);font-size:14px">About 70 MB · best on a computer with a keyboard</span>
+        <span style="color:var(--muted);font-size:14px">About 70 MB · best with a keyboard or a gamepad</span>
       </div>
     </div>
     <div class="keys">
@@ -199,7 +203,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
       <span><kbd>W</kbd><kbd>S</kbd> climb / crouch</span>
       <span><kbd>J</kbd> attack (hold: heavy)</span>
       <span><kbd>K</kbd> special</span>
-      <span><kbd>L</kbd> kick</span>
+      <span><kbd>L</kbd> second chain</span>
       <span><kbd>I</kbd> guard</span>
       <span><kbd>U</kbd> dodge</span>
       <span><kbd>E</kbd> use</span>
@@ -251,8 +255,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
     <div class="numbers">
       <div class="num"><b>3</b><span>heroines</span></div>
       <div class="num"><b>12</b><span>enemies × 4 colours</span></div>
-      <div class="num"><b>263</b><span>weapons</span></div>
-      <div class="num"><b>16</b><span>elements</span></div>
+      <div class="num"><b>212</b><span>weapons</span></div>
+      <div class="num"><b>16</b><span>finishes</span></div>
       <div class="num"><b>11</b><span>terrains + skies</span></div>
       <div class="num"><b>3</b><span>demo levels + bosses</span></div>
     </div>
@@ -265,7 +269,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
         <li>Throw pots, stones, kegs, boulders, or your own weapon, then call it back</li></ul></div>
       <div class="feature"><h3>Weapons</h3><ul>
         <li>Sword, axe, spear, halberd, scythe, mace, hammer, flail, staff, dagger, bow, shield</li>
-        <li>16 elements with lasting effects: burn, freeze, shock, poison, bleed, curse…</li>
+        <li>16 finishes and 11 elemental effects: burn, freeze, shock, poison, bleed, blind…</li>
         <li>8 legendary weapons, each with its own spell and passive</li>
         <li>Weapon belt, slow-motion weapon wheel, upgrades to level 5</li></ul></div>
       <div class="feature"><h3>Enemies and bosses</h3><ul>
@@ -285,7 +289,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
         <li>Title screen with heroine, weapon and level select</li>
         <li>The Armoury shop, saves, end-of-level stars and rewards</li>
         <li>Daily chest, pause menu, subtitled story with portraits</li>
-        <li>Sound effects, music and touch controls for phones</li></ul></div>
+        <li>Sound effects, music, touch controls for phones and gamepad support</li></ul></div>
     </div>
   </div>
 </section>
@@ -296,10 +300,10 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
     <p class="lead">Taken from the demo levels as they ship.</p>
     <div class="gallery">
       <img src="media/shot-1.jpg" alt="Kaya fighting an imp in the Old Forest" loading="lazy">
-      <img src="media/shot-2.jpg" alt="Steelwake gameplay" loading="lazy">
-      <img src="media/shot-3.jpg" alt="Steelwake gameplay" loading="lazy">
-      <img src="media/shot-4.jpg" alt="Steelwake gameplay" loading="lazy">
-      <img src="media/shot-5.jpg" alt="Steelwake gameplay" loading="lazy">
+      <img src="media/shot-2.jpg" alt="Tova fighting a mandrake beside the bog in The Mire" loading="lazy">
+      <img src="media/shot-3.jpg" alt="Wren fighting a skeleton on the ice in The Frost Caves" loading="lazy">
+      <img src="media/shot-4.jpg" alt="Kaya facing the Ogre boss" loading="lazy">
+      <img src="media/shot-5.jpg" alt="Wren against the Yeti boss in The Frost Caves" loading="lazy">
       <img src="media/shot-0-title.jpg" alt="Steelwake title screen" loading="lazy">
     </div>
   </div>
@@ -310,11 +314,11 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
     <h2>What you get</h2>
     <p class="lead">One zip with the whole Godot 4 project, ready to open.</p>
     <ul class="included">
-      <li>The full Godot 4 project, GDScript commented throughout</li>
+      <li>The full Godot 4 project in GDScript, every script explained at the top</li>
       <li>3 heroines and 12 enemies, fully animated, with portraits</li>
-      <li>263 weapons, each with an on-the-back sheet</li>
+      <li>212 weapons in 12 kinds, with on-the-back sheets</li>
       <li>11 terrains with parallax skies, trees, props and effects</li>
-      <li>Sound effects and two music loops</li>
+      <li>Sound effects and three music tracks</li>
       <li>3 demo levels, each ending in a boss fight</li>
       <li>Guides: getting started, every level key, adding enemies, bosses, weapons, puzzles and heroines</li>
       <li>An automated play-test bot for your levels</li>
@@ -331,7 +335,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
     <details><summary>What can't I do?</summary><p>You can't resell or give away the kit or its art as a kit, template or asset pack, changed or not. It ships inside your game, not as something to build games with.</p></details>
     <details><summary>Do I need to know how to code?</summary><p>Not to build levels: that is filling in a table. To add new enemies, weapons or mechanics you'll write some GDScript, and the guides walk you through each one.</p></details>
     <details><summary>Does it run on phones?</summary><p>Yes. Touch controls are built in, and the project exports to Android, iOS, web and desktop like any Godot game.</p></details>
-    <details><summary>How big is it?</summary><p>A 54 MB download and about 81 MB unzipped. A game you build with it is about 70 MB on Android.</p></details>
+    <details><summary>How big is it?</summary><p>A 54 MB download and about 64 MB unzipped. A game you build with it is about 55 MB on Android.</p></details>
     <details><summary>How was the art made?</summary><p>Made from code: every character, weapon and terrain is drawn and animated by our own scripts, so it all matches.</p></details>
     <details><summary>What if I have a problem?</summary><p>Email us from the address on your receipt and we'll help you get it running.</p></details>
   </div>
