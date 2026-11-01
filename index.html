@@ -147,9 +147,15 @@ details p { color: var(--muted); margin: 10px 0 0; }
 .buy ul { text-align: left; display: inline-block; color: var(--muted); margin: 18px 0 26px; }
 footer { padding: 32px 0; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; }
+/* launch sale: hidden by the script at the bottom once LAUNCH20 ends */
+.salebar { background: var(--gold-2); color: #1b1408; text-align: center; padding: 9px 16px; font-weight: 600; font-size: 15px; }
+.salebar code, .salenote code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1.05em; letter-spacing: .04em; background: rgba(27,20,8,.12); padding: 1px 7px; border-radius: 4px; }
+.salenote { margin-top: 10px; color: var(--gold); font-weight: 600; }
+.salenote code { background: rgba(244,217,138,.15); }
 </style>
 </head>
 <body>
+<div class="salebar sale">Launch sale: 20% off until 15 November. Use code <code>LAUNCH20</code> at checkout ($79).</div>
 
 <nav>
   <div class="wrap">
@@ -174,6 +180,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
         <a class="btn btn-buy" href="#buy"><span class="price">$99</span> Buy the kit</a>
         <a class="btn btn-ghost" href="#demo">▶ Play the demo</a>
       </div>
+      <div class="salenote sale">Launch sale: $79 with code <code>LAUNCH20</code>, until 15 Nov</div>
       <div class="facts">
         <span><b>Full source</b> GDScript</span>
         <span><b>Godot</b> 4.7+</span>
@@ -354,6 +361,7 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: 
         <li>Every future update to the kit</li>
       </ul><br>
       <a class="btn btn-buy" id="buyLink" href="https://payhip.com/b/iIjbs">Buy now – $99</a>
+      <div class="salenote sale">Launch sale: enter <code>LAUNCH20</code> at checkout for 20% off ($79), until 15 Nov</div>
     </div>
   </div>
 </section>
@@ -383,6 +391,10 @@ document.querySelectorAll(".gallery img").forEach(function (img) {
   img.addEventListener("click", function () { lb.querySelector("img").src = img.src; lb.classList.add("open"); });
 });
 lb.addEventListener("click", function () { lb.classList.remove("open"); });
+</script>
+<script>
+// LAUNCH20 ends 15 Nov 2026, 11:30 PM IST
+if (Date.now() > Date.parse("2026-11-15T23:30:00+05:30")) document.querySelectorAll(".sale").forEach(e => e.remove());
 </script>
 </body>
 </html>
